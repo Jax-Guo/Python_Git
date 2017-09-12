@@ -2,10 +2,13 @@
 
 import tensorflow as tf
 import numpy as np
+import os
+from tensorflow.python.framework import ops
 
 #唯有将常量、变量、占位量放入session执行，才会有结果，类似于spark中的transform和show，可存放超参数
 s = tf.Session()
 sr = s.run
+ops.reset_default_graph()
 
 ##创建一个简单工作流，并用tensorboard可视化工作流
 #启动tensorboard -> tensorboard --logdir =C:/Users/BFD-725/Anaconda3/Lib/site-packages/tensorboard/log， 其中logdir需要与writer中保持一致
@@ -35,7 +38,7 @@ prod1 = tf.matmul(x_data, m1,name='prod1')
 prod2 = tf.matmul(prod1, m2,name='prod2')
 add1 = tf.add(prod2, a1,name='add1')
 
-writer = tf.summary.FileWriter("C:/Users/BFD-725/Anaconda3/Lib/site-packages/tensorboard/log",tf.get_default_graph())
+writer = tf.summary.FileWriter("C:/Users/BFD-725/Anaconda3/Lib/site-packages/tensorboard/log",s.graph)
 writer.close()
 for x_val in x_vals:
     print(s.run(add1, feed_dict={x_data: x_val}))
@@ -65,7 +68,7 @@ with tf.name_scope("Custom_Layer") as  scope:
     custom_layer1 = custom_layer(mov_avg_layer)
 
 
-writer = tf.summary.FileWriter("C:/Users/BFD-725/Anaconda3/Lib/site-packages/tensorboard/log",tf.get_default_graph())
+writer = tf.summary.FileWriter("C:/Users/BFD-725/Anaconda3/Lib/site-packages/tensorboard/log",s.graph)
 writer.close()
 
 sr(custom_layer1,feed_dict={x_data:x_val})
