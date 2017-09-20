@@ -52,14 +52,14 @@ sess.run(init)
 
 # Training loop
 loss_vec = []
-for i in range(100):
+for i in range(5000):
     rand_index = np.random.choice(len(x_vals), size=batch_size)
     rand_x = np.transpose([x_vals[rand_index]])
     rand_y = np.transpose([y_vals[rand_index]])
     sess.run(train_step, feed_dict={x_data: rand_x, y_target: rand_y})
     temp_loss = sess.run(loss, feed_dict={x_data: rand_x, y_target: rand_y})
     loss_vec.append(temp_loss)
-    if (i+1)%25==0:
+    if (i+1)%250==0:
         print('Step #' + str(i+1) + ' A = ' + str(sess.run(A)) + ' b = ' + str(sess.run(b)))
         print('Loss = ' + str(temp_loss))
 
